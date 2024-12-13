@@ -11,9 +11,7 @@ fetch(url)
     return response.json();
 })
 .then(data => {
-    console.log("data: ", data);
     const name = data['name'];
-    console.log("name: ", name);
     const str = JSON.stringify(name);
     const text = document.createTextNode(str);
     p.appendChild(text);
