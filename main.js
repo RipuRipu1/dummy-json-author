@@ -1,22 +1,19 @@
-const root = document.getElementById('root');
-const index = 1
-const url = `https://jsonplaceholder.typicode.com/users/${index}`
-const p = document.createElement('p');
+const urls = [
+    'https://jsonplaceholder.typicode.com/users/1',
+    'https://jsonplaceholder.typicode.com/users/2',
+    'https://jsonplaceholder.typicode.com/users/3'
+];
 
-fetch(url)
-.then(response => {
-    if (!response.ok) {
-        throw new Error("failed to connect");
-    }
-    return response.json();
-})
-.then(data => {
-    const name = data['name'];
-    const str = JSON.stringify(name);
-    const text = document.createTextNode(str);
-    p.appendChild(text);
-    root.appendChild(p);
-})
-.catch(function(error){
-    console.log(error);
-});
+const roots = document.querySelectorAll('.root');
+
+Promise.all(urls.map(url => fetch(url).then(response => response.json())))
+    .then(dataArray => {
+        dataArray.forEach((data, index) => {
+            const authorElement = roots[index];
+            
+            authorElement.textContent = data.name;
+        });
+    })
+    .catch(error => {
+        console.error("Failed to fetch data: ", error);
+    });
